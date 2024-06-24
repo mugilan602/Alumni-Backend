@@ -52,7 +52,10 @@ const userSchema = new Schema({
     profileImage: {
         type: String,
         default: ''
-    }
+    }, jobs: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Job'
+    }]
 });
 
 userSchema.statics.login = async function(email, password) {
