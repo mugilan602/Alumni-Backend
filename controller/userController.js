@@ -48,13 +48,30 @@ const signup = async (req, res) => {
             department,
             profileImage
         );
+        const userId=user._id
         const token = createToken(user._id);
-        res.status(200).json({ email, token });
+        res.status(200).json({userId,email, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
+const updateImageUrl = async (req, res) => {
+    const { userId } = req.params;
+    const {profileImage}=req.body;
+    try {
+        const user = await User.findByIdAndUpdate(userId, { profileImage }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error updating profile image:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 const fetchData = async (req, res) => {
     const userId = req.user._id;
     try {
@@ -65,4 +82,5 @@ const fetchData = async (req, res) => {
     }
 };
 
-module.exports = { login, signup, fetchData };
+
+module.exports = { login, signup, fetchData,updateImageUrl };
