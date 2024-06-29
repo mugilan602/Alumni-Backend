@@ -30,7 +30,8 @@ const signup = async (req, res) => {
         location,
         batch,
         department,
-        profileImage
+        profileImage,
+        linkedIn
     } = req.body;
 
     try {
@@ -46,7 +47,8 @@ const signup = async (req, res) => {
             location,
             batch,
             department,
-            profileImage
+            profileImage,
+            linkedIn
         );
         const userId=user._id
         const token = createToken(user._id);
@@ -82,5 +84,19 @@ const fetchData = async (req, res) => {
     }
 };
 
+const fetchAlumniByDept = async (req, res) => {
+    const { department } = req.params; // Assuming req.body contains the department name
+  
+    try {
+      // Query the User collection to find users matching the specified department
+      const alumniDetails = await User.find({ department});
+  
+      // Respond with a 200 status and JSON array of alumni details
+      res.status(200).json(alumniDetails);
+    } catch (error) {
+      // Handle any errors that occur during the database query
+      res.status(400).json({ error: error.message });
+    }
+  };
 
-module.exports = { login, signup, fetchData,updateImageUrl };
+module.exports = { login, signup, fetchData,updateImageUrl,fetchAlumniByDept };

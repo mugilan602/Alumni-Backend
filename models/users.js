@@ -55,7 +55,10 @@ const userSchema = new Schema({
     }, jobs: [{
         type: Schema.Types.ObjectId,
         ref: 'Job'
-    }]
+    }],linkedIn:{
+        type:String,
+        required:true
+    }
 });
 
 userSchema.statics.login = async function(email, password) {
@@ -74,7 +77,7 @@ userSchema.statics.login = async function(email, password) {
     return user;
 };
 
-userSchema.statics.signup = async function(email, password, firstName, lastName, phoneNumber, employeeType, position, companyName, location, batch, department, profileImage = '') {
+userSchema.statics.signup = async function(email, password, firstName, lastName, phoneNumber, employeeType, position, companyName, location, batch, department, profileImage = '',linkedIn) {
     const exists = await this.findOne({ email });
     if (exists) {
         throw new Error("Email already in use");
@@ -95,7 +98,8 @@ userSchema.statics.signup = async function(email, password, firstName, lastName,
         location,
         batch,
         department,
-        profileImage
+        profileImage,
+        linkedIn
     });
     return user;
 };
